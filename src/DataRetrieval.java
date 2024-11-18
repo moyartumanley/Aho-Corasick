@@ -1,4 +1,3 @@
-package API;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,11 +17,13 @@ public class DataRetrieval {
             .build();
     HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     System.out.println(response.body());
-}
+        }
+    
         public static void main(String[] args) throws IOException, InterruptedException {
             DataRetrieval data = new DataRetrieval();
                 
             System.out.println(data.response);
     }
 }
+
 
