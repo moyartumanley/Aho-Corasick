@@ -144,7 +144,7 @@ public class AhoCorasick {
     /**
      * Sets suffix and terminal suffix pointers for every node. Should be called after adding all strings to the tree.
      */
-    public void setSuffixes(){
+    public void updateSuffixes(){
         recursiveSetSuffixes(root);
         recursiveSetTerminalSuffixes(root);
     }
@@ -175,7 +175,7 @@ public class AhoCorasick {
         }
         for (Character letter : currentChildren.keySet()){
             TreeNode nextSuffix = currentChildren.get(letter).suffix;
-            
+
             while (!nextSuffix.equals(root)){
                 if (nextSuffix.inDictionary){
                     currentChildren.get(letter).terminalSuffix = nextSuffix;

@@ -86,7 +86,7 @@ public class AhoCorasickTest {
         tree.add("bca");
         tree.add("c");
         tree.add("caa");
-        tree.setSuffixes();
+        tree.updateSuffixes();
 
         assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
         assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("b").suffix);
@@ -108,7 +108,7 @@ public class AhoCorasickTest {
         tree.add("bca");
         tree.add("c");
         tree.add("caa");
-        tree.setSuffixes();
+        tree.updateSuffixes();
 
         assertEquals(null, tree.getNodeWithString("a").terminalSuffix);
         assertEquals(null, tree.getNodeWithString("b").terminalSuffix);
@@ -131,7 +131,7 @@ public class AhoCorasickTest {
         tree.add("bca");
         tree.add("c");
         tree.add("caa");
-        tree.setSuffixes();
+        tree.updateSuffixes();
 
         //All suffixes
         assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
