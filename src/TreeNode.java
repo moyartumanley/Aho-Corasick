@@ -6,20 +6,30 @@ public class TreeNode {
     // from the root of the tree to this node.
     public boolean inDictionary;
 
-    // The letter this node represents
-    // This isn't strickly necessary since you can get the letter from the key used to link this node's parent,
-    // but this can make things easier.
+    // The letter that is added to the parent node to 
+    // This may not be used because the edges (keys in the chidren map) represent the letter
     public char letter;
 
+    // The word (or substring) that the node represents
+    public String string;
+
     // The node's children keyed by each child node's letter
-    public Map<Character, TreeNode> children;
-    public Map<Character, TreeNode> suffix;
-    public Map<Character, TreeNode> dictionarySuffix;
+    public Map<Character, TreeNode> children = new HashMap<>();
+
+    // The node's suffixes
+    public TreeNode suffix;
+    public TreeNode dictionarySuffix;
 
     public TreeNode(){
-        children = new HashMap<>();
-        suffix = new HashMap<>();
-        dictionarySuffix = new HashMap<>();
         inDictionary = false;
+        string = "";
     }
+
+    //Constructor that automanically sets the last character of the string as the letter while string the string itself
+    public TreeNode(String string){
+        inDictionary = false;
+        letter = string.charAt(string.length() -1);
+        this.string = string;
+    }
+
 }

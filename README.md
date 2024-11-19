@@ -9,6 +9,10 @@ Rachel's notes here for now lmao (working on the Aho-Corasick algorithm):
     - Black edges: exactly the same from hw3: next letter in the word
     - Blue edges: connects the node of the longest possible suffix that exists in the tree. Can be found using breadth-first search
     - Green edge: connects to the next node that can be reached by following the blue edges
-    - https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
 
+Sources:
+- https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
+- https://cp-algorithms.com/string/aho_corasick.html
+
+Todo's:
 - Figure out what memoizing is lmao

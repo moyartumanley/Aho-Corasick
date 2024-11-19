@@ -1,0 +1,102 @@
+import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
+public class AhoCorasickTest {  
+
+    @Test
+    public void testAdd(){ //Test from HW3. Should still work after implementation
+        AhoCorasick tree = new AhoCorasick();
+        tree.add("cat");
+        tree.add("muse");
+        tree.add("muscle");
+        tree.add("musk");
+        tree.add("po");
+        tree.add("pot");
+        tree.add("pottery");
+        tree.add("potato");
+        tree.add("possible");
+        tree.add("possum");
+        tree.add("pot");
+        assertEquals(10, tree.size());
+    }
+
+    @Test
+    public void testContains(){ //Test from HW3. Should still work after implementation
+        AhoCorasick tree = new AhoCorasick();
+        tree.add("cat");
+        tree.add("muse");
+        tree.add("muscle");
+        tree.add("musk");
+        tree.add("po");
+        tree.add("pot");
+        tree.add("pottery");
+        tree.add("potato");
+        tree.add("possible");
+        tree.add("possum");
+        tree.add("pot");
+        assertFalse(tree.contains("mu"));
+        assertFalse(tree.contains("dog"));
+        assertTrue(tree.contains("pot"));
+        assertTrue(tree.contains("pottery"));
+        assertTrue(tree.contains("possum"));
+        assertEquals(10, tree.size());
+    }
+
+    @Test
+    public void testPrefix(){ //Test from HW3 with an added test for a case with no results. Should still work after implementation
+        AhoCorasick tree = new AhoCorasick();
+        tree.add("cat");
+        tree.add("muse");
+        tree.add("muscle");
+        tree.add("musk");
+        tree.add("poe");
+        tree.add("pot");
+        tree.add("pottery");
+        tree.add("potato");
+        tree.add("possible");
+        tree.add("possum");
+        tree.add("pot");
+        ArrayList<String> result = tree.getWordsForPrefix("pot");
+        assertEquals(3, result.size());
+        assertTrue(result.contains("pot"));
+        assertTrue(result.contains("pottery"));
+        assertTrue(result.contains("potato"));
+        
+        result = tree.getWordsForPrefix("mu");
+        assertEquals(3, result.size());
+        assertTrue(result.contains("muse"));
+        assertTrue(result.contains("muscle"));
+        assertTrue(result.contains("musk"));
+
+        result = tree.getWordsForPrefix("ssssss");
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testSuffixes(){
+        AhoCorasick tree = new AhoCorasick();
+        tree.add("a");
+        tree.add("ab");
+        tree.add("bc");
+        tree.add("bca");
+        tree.add("c");
+        tree.add("caa");
+        tree.setSuffixes();
+
+        assertEquals(tree.getNodeWithString("a").suffix, tree.getNodeWithString(""));
+        assertEquals(tree.getNodeWithString("b").suffix, tree.getNodeWithString(""));
+        assertEquals(tree.getNodeWithString("c").suffix, tree.getNodeWithString(""));
+        assertEquals(tree.getNodeWithString("ab").suffix, tree.getNodeWithString("b"));
+        assertEquals(tree.getNodeWithString("bc").suffix, tree.getNodeWithString("c"));
+        assertEquals(tree.getNodeWithString("ca").suffix, tree.getNodeWithString("a"));
+        assertEquals(tree.getNodeWithString("bca").suffix, tree.getNodeWithString("ca"));
+        assertEquals(tree.getNodeWithString("caa").suffix, tree.getNodeWithString("a"));
+
+    }
+    
+}

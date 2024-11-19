@@ -11,7 +11,7 @@ public class AhoCorasick {
     private int size;
 
     public AhoCorasick(){
-        root = new TreeNode();
+        root = new TreeNode(); //null node
     }
 
     /**
@@ -23,15 +23,18 @@ public class AhoCorasick {
         if (!contains(word)){ // no effect if word already exists
             TreeNode current = root;
 
-            while (word.length() > 0){ // iterates through each character in the word, going from left to right
-                char currentChar = word.charAt(0); 
+            for (int i = 0; i < word.length(); i++){ // iterates through each character in the word, going from left to right
+                char currentChar = word.charAt(i); 
 
                 if (!current.children.containsKey(currentChar)){ // if letter doesn't exist at that branch, put it in the tree
-                    current.children.put(currentChar, new TreeNode());
+                    current.children.put(currentChar, new TreeNode(word.substring(0, i + 1)));
                 }
 
-                word = word.substring(1, word.length()); // moves to next character/node
                 current = current.children.get(currentChar);
+
+                if(current.string.length() == 1){ // All of root's children's suffixes will be root. Helps with setting suffixes later
+                    current.suffix = root;
+                }
             }
             current.inDictionary = true;
             size++;
@@ -74,20 +77,10 @@ public class AhoCorasick {
      */
     public ArrayList<String> getWordsForPrefix(String prefix){
         ArrayList<String> result = new ArrayList<>();
-        TreeNode current = root;
-        String prefixCopy = prefix + "";
 
-        while (prefixCopy.length() > 0){ // loop to get to the right node containing the prefix
-
-            char currentChar = prefixCopy.charAt(0);
-
-            if (current.children.containsKey(currentChar)){
-                prefixCopy = prefixCopy.substring(1, prefixCopy.length());
-                current = current.children.get(currentChar);
-            }
-            else{
-                return result; // prefix doesn't exist, thus returns nothing.
-            }
+        TreeNode current = getNodeWithString(prefix);
+        if (current == null){
+            return result;
         }
         if (current.inDictionary){ // checks if prefix is a word
             result.add(prefix);
@@ -123,5 +116,53 @@ public class AhoCorasick {
      */
     public int size(){
         return size;
+    }
+
+    /**
+     * Finds the node that represents the string inputed.
+     * @param string 
+     * @return Node containing the string. If the tree does not contain the string, returns null.
+     */
+    public TreeNode getNodeWithString(String string){
+        TreeNode current = root;
+        while (string.length() > 0){ // loop to get to the right node containing the string
+
+            char currentChar = string.charAt(0);
+
+            if (current.children.containsKey(currentChar)){
+                string = string.substring(1, string.length());
+                current = current.children.get(currentChar);
+            }
+            else{
+                return null; // string doesn't exist inside the tree, thus returns nothing.
+            }
+        }
+        return current;
+    }
+
+    /**
+     * Sets suffix pointers for every node. Should be called after adding all strings to the tree.
+     */
+    public void setSuffixes(){
+        recursiveSetSuffixes(root);
+    }
+    
+    private void recursiveSetSuffixes(TreeNode currentNode){
+        Map<Character, TreeNode> currentChildren = currentNode.children;
+        if (currentChildren.size() == 0){
+            return;
+        }
+        for (Character letter : currentChildren.keySet()){
+            if (currentChildren.get(letter).suffix == null){
+                if (currentNode.suffix.children.get(letter) != null){
+                    currentChildren.get(letter).suffix = currentNode.suffix.children.get(letter);
+                }
+                else{
+                    currentChildren.get(letter).suffix = currentNode.suffix;
+                }
+            }
+            recursiveSetSuffixes(currentChildren.get(letter));
+
+        }
     }
 }
