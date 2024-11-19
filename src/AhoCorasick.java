@@ -12,6 +12,7 @@ public class AhoCorasick {
 
     public AhoCorasick(){
         root = new TreeNode(); //null node
+        root.suffix = root;
     }
 
     /**
@@ -141,10 +142,11 @@ public class AhoCorasick {
     }
 
     /**
-     * Sets suffix pointers for every node. Should be called after adding all strings to the tree.
+     * Sets suffix and terminal suffix pointers for every node. Should be called after adding all strings to the tree.
      */
     public void setSuffixes(){
         recursiveSetSuffixes(root);
+        recursiveSetTerminalSuffixes(root);
     }
     
     private void recursiveSetSuffixes(TreeNode currentNode){
@@ -163,6 +165,27 @@ public class AhoCorasick {
             }
             recursiveSetSuffixes(currentChildren.get(letter));
 
+        }
+    }
+
+    private void recursiveSetTerminalSuffixes(TreeNode currentNode){
+        Map<Character, TreeNode> currentChildren = currentNode.children;
+        if (currentChildren.size() == 0){
+            return;
+        }
+        for (Character letter : currentChildren.keySet()){
+            TreeNode nextSuffix = currentChildren.get(letter).suffix;
+            
+            while (!nextSuffix.equals(root)){
+                if (nextSuffix.inDictionary){
+                    currentChildren.get(letter).terminalSuffix = nextSuffix;
+                    break;
+                }
+                else{
+                    nextSuffix = nextSuffix.suffix;
+                }
+            }
+            recursiveSetTerminalSuffixes(currentChildren.get(letter));
         }
     }
 }

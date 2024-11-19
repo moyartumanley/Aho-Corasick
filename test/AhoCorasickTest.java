@@ -88,15 +88,74 @@ public class AhoCorasickTest {
         tree.add("caa");
         tree.setSuffixes();
 
-        assertEquals(tree.getNodeWithString("a").suffix, tree.getNodeWithString(""));
-        assertEquals(tree.getNodeWithString("b").suffix, tree.getNodeWithString(""));
-        assertEquals(tree.getNodeWithString("c").suffix, tree.getNodeWithString(""));
-        assertEquals(tree.getNodeWithString("ab").suffix, tree.getNodeWithString("b"));
-        assertEquals(tree.getNodeWithString("bc").suffix, tree.getNodeWithString("c"));
-        assertEquals(tree.getNodeWithString("ca").suffix, tree.getNodeWithString("a"));
-        assertEquals(tree.getNodeWithString("bca").suffix, tree.getNodeWithString("ca"));
-        assertEquals(tree.getNodeWithString("caa").suffix, tree.getNodeWithString("a"));
+        assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
+        assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("b").suffix);
+        assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("c").suffix);
+        assertEquals(tree.getNodeWithString("b"), tree.getNodeWithString("ab").suffix);
+        assertEquals(tree.getNodeWithString("c"), tree.getNodeWithString("bc").suffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("ca").suffix);
+        assertEquals(tree.getNodeWithString("ca"), tree.getNodeWithString("bca").suffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("caa").suffix);
 
+    }
+
+    @Test
+    public void testTerminalSuffixes(){
+        AhoCorasick tree = new AhoCorasick();
+        tree.add("a");
+        tree.add("ab");
+        tree.add("bc");
+        tree.add("bca");
+        tree.add("c");
+        tree.add("caa");
+        tree.setSuffixes();
+
+        assertEquals(null, tree.getNodeWithString("a").terminalSuffix);
+        assertEquals(null, tree.getNodeWithString("b").terminalSuffix);
+        assertEquals(null, tree.getNodeWithString("c").terminalSuffix);
+        assertEquals(null, tree.getNodeWithString("ab").terminalSuffix);
+        assertEquals(tree.getNodeWithString("c"), tree.getNodeWithString("bc").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("ca").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("bca").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("caa").terminalSuffix);
+
+    }
+
+    @Test
+    public void testBothSuffixes(){
+        AhoCorasick tree = new AhoCorasick();
+        tree.add("a");
+        tree.add("ab");
+        tree.add("bab");
+        tree.add("bc");
+        tree.add("bca");
+        tree.add("c");
+        tree.add("caa");
+        tree.setSuffixes();
+
+        //All suffixes
+        assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
+        assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("b").suffix);
+        assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("c").suffix);
+        assertEquals(tree.getNodeWithString("b"), tree.getNodeWithString("ab").suffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("ba").suffix);
+        assertEquals(tree.getNodeWithString("c"), tree.getNodeWithString("bc").suffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("ca").suffix);
+        assertEquals(tree.getNodeWithString("ab"), tree.getNodeWithString("bab").suffix);
+        assertEquals(tree.getNodeWithString("ca"), tree.getNodeWithString("bca").suffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("caa").suffix);
+
+        //All terminal suffixes
+        assertEquals(null, tree.getNodeWithString("a").terminalSuffix);
+        assertEquals(null, tree.getNodeWithString("b").terminalSuffix);
+        assertEquals(null, tree.getNodeWithString("c").terminalSuffix);
+        assertEquals(null, tree.getNodeWithString("ab").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("ba").terminalSuffix);
+        assertEquals(tree.getNodeWithString("c"), tree.getNodeWithString("bc").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("ca").terminalSuffix);
+        assertEquals(tree.getNodeWithString("ab"), tree.getNodeWithString("bab").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("bca").terminalSuffix);
+        assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("caa").terminalSuffix);
     }
     
 }

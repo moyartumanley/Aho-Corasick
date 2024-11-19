@@ -16,9 +16,11 @@ public class TreeNode {
     // The node's children keyed by each child node's letter
     public Map<Character, TreeNode> children = new HashMap<>();
 
-    // The node's suffixes
+    // The node's largest proper suffix 
     public TreeNode suffix;
-    public TreeNode dictionarySuffix;
+
+    // The next suffix that is a word
+    public TreeNode terminalSuffix;
 
     public TreeNode(){
         inDictionary = false;
@@ -30,6 +32,11 @@ public class TreeNode {
         inDictionary = false;
         letter = string.charAt(string.length() -1);
         this.string = string;
+    }
+
+    @Override
+    public String toString(){
+        return string;
     }
 
 }
