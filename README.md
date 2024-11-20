@@ -13,6 +13,7 @@ Rachel's notes here for now lmao (working on the Aho-Corasick algorithm):
 Sources:
 - https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm
 - https://cp-algorithms.com/string/aho_corasick.html
+- https://compiler.club/aho-corasick/ (This one has a demo)
 
 **HOW THE ALGORITHM WORKS FOR THE SAKE OF ABSTRACTION:**
 After addding all of the nodes, call `updateSuffixes()` to essentially "finish" the tree. Each node has two kinds of suffixes. 
