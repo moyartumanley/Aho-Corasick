@@ -1,18 +1,44 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AhoCorasick {
     
-     private TreeNode root; 
+    private TreeNode root; 
 
-
-     //currently code ripped off from hw 3 lmao
     // Number of words contained in the tree
     private int size;
 
+    /**
+     * Aho-Corasick tree with null root node
+     */
     public AhoCorasick(){
         root = new TreeNode(); //null node
+        root.suffix = root; //root's suffix is itself, helps with recursion for suffix assignment
+    }
+
+    /**
+     * Aho-Corasick tree with all of the words in wordList. After adding everything, automatically set suffixes. 
+     * To avoid bugs, do not alter the tree that is made using this constructor
+     * @param wordList
+     */
+    public AhoCorasick(List<String> wordList){
+        root = new TreeNode(); //null node
         root.suffix = root;
+
+        add(wordList);
+        updateSuffixes();
+    }
+
+    /**
+     * Adds all of the words from the list to the tree where each letter in sequence is added as a node
+     * If a word, is already in the tree, then nothing will happen in relation to that word.
+     * @param wordList
+     */
+    public void add(List<String> wordList){
+        for (int i = 0; i < wordList.size(); i++){
+            add(wordList.get(i));
+        }
     }
 
     /**
@@ -48,26 +74,8 @@ public class AhoCorasick {
      * @return true if contained in the tree.
      */
     public boolean contains(String word){
-        TreeNode current = root;
-
-        while (word.length() > 0){ // iterates through each character of the word
-
-            char currentChar = word.charAt(0);
-
-            if (current.children.containsKey(currentChar)){
-                word = word.substring(1, word.length());
-                current = current.children.get(currentChar);
-            }
-            else{
-                return false; // word doesn't exist if the tree doesn't have parts of the word
-            }
-        }
-        if (current.inDictionary){ // word must be an actual word and not a part of a word.
-            return true;
-        }
-        else{
-            return false;
-        }
+        TreeNode wordNode = getNodeWithString(word);
+        return wordNode != null && wordNode.inDictionary;
     }
 
     /**
@@ -142,7 +150,8 @@ public class AhoCorasick {
     }
 
     /**
-     * Sets suffix and terminal suffix pointers for every node. Should be called after adding all strings to the tree.
+     * Sets suffix and terminal suffix pointers for every node. 
+     * This method should be called after adding all strings to the tree or else there will be errors.
      */
     public void updateSuffixes(){
         recursiveSetSuffixes(root);
