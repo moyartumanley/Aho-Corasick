@@ -1,7 +1,7 @@
 # Trendmaxxing
 
 Info about your project goes here
-
+    shoutout 𝔠𝔬𝔫𝔫𝔬𝔯𝔰𝔞𝔢𝔭
 
 Rachel's notes here for now lmao (working on the Aho-Corasick algorithm):
 - Tree similar to hw3: trie where nodes have a true or false value for if the String is within the dictionary (i.e. if the node is the last character of a word or not)
