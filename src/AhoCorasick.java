@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ public class AhoCorasick {
 
     /**
      * Aho-Corasick tree with null root node
+     * It is best to use the constructor with the list parameter to properly set suffixes
      */
     public AhoCorasick(){
         root = new TreeNode(); //null node
@@ -118,6 +120,48 @@ public class AhoCorasick {
             }
             return words;
         }
+    }
+
+    /**
+     * Searches for similar words to the string, ordering the elements of the list with words with similar prefixes to similar suffixes.
+     * @param string
+     * @return resulting list of similar words
+     */
+    public ArrayList<String> searchSimilarWords(String string){
+        ArrayList<String> result = new ArrayList<>();
+
+        TreeNode prefixNode = root;
+        while (string.length() > 0){ // loop to get to the right node containing the string
+
+            char currentChar = string.charAt(0);
+
+            if (prefixNode.children.containsKey(currentChar)){
+                string = string.substring(1, string.length());
+                prefixNode = prefixNode.children.get(currentChar);
+            }
+            else{
+                break;
+            }
+        }
+
+        String largestPrefix = prefixNode.string;
+
+        result.addAll(getWordsForPrefix(largestPrefix));
+
+        if (prefixNode.terminalSuffix!= null && !prefixNode.suffix.equals(prefixNode.terminalSuffix)){
+            result.addAll(getWordsForPrefix(prefixNode.terminalSuffix.string));
+        }
+
+        result.addAll(getWordsForPrefix(prefixNode.suffix.string));
+
+        while(result.contains("")){ //removes all empty trees
+            result.remove("");
+        }
+
+        LinkedHashSet<String> removingDups = new LinkedHashSet<>(result);
+        result = new ArrayList<>(removingDups);
+        
+        return result;
     }
 
     /**

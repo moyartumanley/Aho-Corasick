@@ -206,5 +206,46 @@ public class AhoCorasickTest {
         assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("bca").terminalSuffix);
         assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("caa").terminalSuffix);
     }
+
+    @Test
+    public void testSearchForAlternativeWords(){
+        List<String> wordList = new ArrayList<>();
+        wordList.add("a");
+        wordList.add("ab");
+        wordList.add("bab");
+        wordList.add("bc");
+        wordList.add("bca");
+        wordList.add("c");
+        wordList.add("caa");
+        AhoCorasick tree = new AhoCorasick(wordList);
+
+        assertEquals(List.of("a", "ab", "bab", "bc", "bca", "c", "caa"), tree.searchSimilarWords("aa"));
+        assertEquals(List.of("caa", "a","ab"), tree.searchSimilarWords("cac"));
+        assertEquals(List.of("bca", "a","ab", "caa"), tree.searchSimilarWords("bcaa"));
+    }
+
+    @Test
+    public void testSearchForAlternativeWordsWithActualWords(){
+        List<String> wordList = new ArrayList<>();
+        wordList.add("red");
+        wordList.add("read");
+        wordList.add("dread");
+        wordList.add("bead");
+        wordList.add("eat");
+        wordList.add("ear");
+        wordList.add("dear");
+        wordList.add("bear");
+        wordList.add("fear");
+        wordList.add("led");
+        wordList.add("lead");
+        wordList.add("leaf");
+        wordList.add("earth");
+        wordList.add("reed");
+        AhoCorasick tree = new AhoCorasick(wordList);
+
+        assertEquals(List.of("bear", "ear","earth"), tree.searchSimilarWords("bear"));
+        
+        assertEquals(List.of("reed", "ear","earth", "eat"), tree.searchSimilarWords("ree"));
+    }
     
 }
