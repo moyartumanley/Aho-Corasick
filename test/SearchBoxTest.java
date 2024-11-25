@@ -26,12 +26,21 @@ public class SearchBoxTest {
         wordList.add("leaf");
         wordList.add("earth");
         wordList.add("reed");
+        wordList.add("priority");
+        wordList.add("orbit");
+        wordList.add("party");
+        wordList.add("top");
+        wordList.add("trending");
+        wordList.add("tend");
+        wordList.add("ending");
+        wordList.add("endings");
 
         SearchBox search = new SearchBox(450, wordList);
         search.setCenter(canvas.getWidth()/2,canvas.getHeight()/4);
         canvas.add(search);
 
-        search.addPrioritySearch("dread");
+        search.addPrioritySearch("priority");
+        search.addPrioritySearch("trending");
 
         canvas.onCharacterTyped(event -> search.addCharacter(event.charValue()));
         canvas.onKeyDown(event -> {

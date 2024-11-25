@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SearchBox extends GraphicsGroup {
 
@@ -75,15 +76,14 @@ public class SearchBox extends GraphicsGroup {
         clearResults();
         if (!text.equals("")){
             int y = HEIGHT;
-            List<String> results = words.searchSimilarWords(text).stream().limit(10).toList();
+            List<String> results = words.searchSimilarWords(text).stream().limit(10).collect(Collectors.toList());
 
-            // List<String> priority = results.stream().filter(result -> prioritySearches.contains(result)).toList();
-            // results.removeAll(priority);
-            // priority.addAll(results);
-
+            List<String> priority = results.stream().filter(result -> prioritySearches.contains(result)).collect(Collectors.toList());
+            results.removeAll(priority);
+            priority.addAll(results);
         
-            for(int i = 0; i < results.size(); i++){
-                makeResultBox(results.get(i), y);
+            for(int i = 0; i < priority.size(); i++){
+                makeResultBox(priority.get(i), y);
                 y += HEIGHT;
             }
         }
@@ -107,7 +107,10 @@ public class SearchBox extends GraphicsGroup {
     }
 
     public void addPrioritySearch(String text){
-        prioritySearches.add(text);
+        if(words.contains(text)){
+            prioritySearches.add(text);
+        }
+        
     }
     
 
