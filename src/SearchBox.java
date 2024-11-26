@@ -17,18 +17,11 @@ public class SearchBox extends GraphicsGroup {
     private final int HEIGHT = 30;
     private final int width;
 
-    public SearchBox(int width){
-        super();
-        this.width = width;
-
-        background = new Rectangle(0,0,width,HEIGHT); // make width parameter maybe
-        background.setFillColor(Color.WHITE);
-        add(background);
-
-        searchBox = new GraphicsText("|",5,HEIGHT / 3 * 2);
-        add(searchBox);
-    }
-
+    /**
+     * Creates a search box with a list of words as its data.
+     * @param width
+     * @param wordList
+     */
     public SearchBox(int width, List<String> wordList){
         super();
         this.width = width;
@@ -43,6 +36,11 @@ public class SearchBox extends GraphicsGroup {
         words = new AhoCorasick(wordList);
     }
 
+    /**
+     * Creates a search box with a tree of words as its data.
+     * @param width
+     * @param wordList
+     */
     public SearchBox(int width, AhoCorasick wordTree){
         super();
         this.width = width;
@@ -57,12 +55,19 @@ public class SearchBox extends GraphicsGroup {
         words = wordTree;
     }
 
+    /**
+     * Adds the character to the end of the search box
+     * @param c
+     */
     public void addCharacter(Character c){
         text += c;
         searchBox.setText(text + "|");
         updateResults();
     }
 
+    /**
+     * Deletes the last character in the search box.
+     */
     public void deleteLastCharacter(){
         if (text.length() > 0){
             text = text.substring(0, text.length() - 1);
@@ -72,6 +77,9 @@ public class SearchBox extends GraphicsGroup {
         
     }
 
+    /**
+     * Updates the result boxes based on what has been typed in the search box so far.
+     */
     public void updateResults(){
         clearResults();
         if (!text.equals("")){
@@ -89,6 +97,11 @@ public class SearchBox extends GraphicsGroup {
         }
     }
 
+    /**
+     * Creates a text box for a result
+     * @param result text
+     * @param y coordinate of the box
+     */
     private void makeResultBox(String result, int y){
         Rectangle background = new Rectangle(0,y,width,HEIGHT); 
         background.setFillColor(Color.WHITE);
@@ -99,6 +112,9 @@ public class SearchBox extends GraphicsGroup {
         add(text);
     }
 
+    /**
+     * Clears all results.
+     */
     private void clearResults(){
         removeAll();
         add(background);
@@ -106,6 +122,10 @@ public class SearchBox extends GraphicsGroup {
 
     }
 
+    /**
+     * Adds a text to the priority, making it appear first if matched.
+     * @param text
+     */
     public void addPrioritySearch(String text){
         if(words.contains(text)){
             prioritySearches.add(text);

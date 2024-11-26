@@ -154,7 +154,7 @@ public class AhoCorasick {
 
         result.addAll(getWordsForPrefix(prefixNode.suffix.string));
 
-        while(result.contains("")){ //removes all empty trees
+        while(result.contains("")){ //removes all empty strings
             result.remove("");
         }
 
@@ -197,7 +197,7 @@ public class AhoCorasick {
      * Sets suffix and terminal suffix pointers for every node. 
      * This method should be called after adding all strings to the tree or else there will be errors.
      */
-    public void updateSuffixes(){
+    public void updateSuffixes(){ //TODO: make pointers that show what the node is a suffix of for easier navigation. Maybe also add traversal list. 
         recursiveSetSuffixes(root);
         recursiveSetTerminalSuffixes(root);
     }
