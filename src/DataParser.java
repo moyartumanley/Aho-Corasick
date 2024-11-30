@@ -7,6 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DataParser {
+    /**
+     * Reads data and collects relevant stats.
+     * 
+     * @param filePath
+     */
     private static void readData(String filePath) {
         try {
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
@@ -36,13 +41,19 @@ public class DataParser {
         }
     }
 
+    /**
+     * Outputs relevant info from API data.
+     * 
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public void processData() throws InterruptedException, IOException {
         DataDownloader downloader = new DataDownloader();
 
-        /*Writes JSON contents to a file.*/
+        /* Writes JSON contents to a file. Only have to run if you want to collect updated data from the API. */
         // downloader.writeToFile();
 
-        /*File address of JSON file. */
+        /* File address of JSON file. */
         String filePath = "./res/data.json";
 
         try {

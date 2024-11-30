@@ -5,21 +5,21 @@ import java.io.IOException;
 import org.json.JSONObject;
 
 public class DataDownloader {
-    static File dataJSON;
+    static File dataFile;
 
     /**
      * Creates JSON file.
      */
-    public static void createFile() {
+    private static void createFile() {
         try {
-            dataJSON = new File("./res/data.json");
-            if (dataJSON.createNewFile()) {
-                System.out.println("File created: " + dataJSON.getName());
+            dataFile = new File("./res/data.json");
+            if (dataFile.createNewFile()) {
+                System.out.println("File created: " + dataFile.getName());
             } else {
                 System.out.println("File already exists.");
             }
         } catch (IOException e) {
-            dataJSON = null;
+            dataFile = null;
             System.out.println("An error occurred with file creation.");
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class DataDownloader {
         DataFetcher fetcher = new DataFetcher();
         JSONObject data = fetcher.getJSON();
         try {
-            FileWriter writeToFile = new FileWriter(dataJSON);
+            FileWriter writeToFile = new FileWriter(dataFile);
             writeToFile.write(data.toString());
             writeToFile.close();
             System.out.println("Successfully wrote to the file.");
