@@ -21,3 +21,8 @@ After addding all of the nodes, call `updateSuffixes()` to essentially "finish" 
 "Suffix" is the largest suffix that exist in the tree. For example, let's say the tree has the word "cat". The possible suffixes are "at", "a", and "". If the tree has the representing "at", then the suffix of "cat" points to the node "at". If "at" doesn't exist but "a" does, then the suffix is "a". Only single letter nodes should have their suffix be "". 
 
 "Terminal Suffix" is the next word after following a chain of suffixes. This can be null if no such node exists. For example, let's say the tree has both the word "acceptable" and its largest suffix is "ceptable". That is not a word, but is in the tree somewhere and is thus the largest suffix. However, somewhere, "table" is in the tree, and it is "ceptable"'s largest suffix. Since "table" is a word, "table" will also be "ceptable"'s terminal suffix. "acceptable"'s suffix is not a word, so we go to the suffix's suffix. The suffix's suffix is a word, so acceptable's terminal suffix is "table". The chaining of suffixes would repeat until we either find a word or reach the null node, which in the null node case the terminal suffix is null.
+
+**Utilizing JSON with Java:**
+Package: https://mvnrepository.com/artifact/org.json/json/20240303
+Documentation: https://stleary.github.io/JSON-java/index.html
+
