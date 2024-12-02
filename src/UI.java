@@ -1,32 +1,33 @@
 import edu.macalester.graphics.*;
+import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
 
 import java.util.function.Consumer;
+import java.awt.Canvas;
 import java.awt.Color;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
+// orignal code lifted from Gesture Recognizer
+
 public class UI {
-    private CanvasWindow canvas;
-    private GraphicsGroup uiGroup;
-    private GraphicsGroup interactGroup;
-    private Button addTemplateButton;
-    private TextField templateNameField;
     private GraphicsText searchSuggestions;
     private Image wifi;
     private Image searchBar;
     private Random r = new Random();
+    private SearchBox searchBox;
 
-    public UI(){
-        canvas = new CanvasWindow("Trendmaxxer", 600, 900);
-        setupUI();
+    public UI(CanvasWindow canvas){
+        setupUI(canvas);
     }
 
      /**
      * Create the user interface
      */
-    private void setupUI(){
+    public void setupUI(CanvasWindow canvas){
         searchSuggestions = new GraphicsText(clockRandomizer());
         searchSuggestions.setFont(FontStyle.PLAIN, 25);
         canvas.add(searchSuggestions, 20,  40);
@@ -40,9 +41,13 @@ public class UI {
         searchBar.setMaxHeight(100); 
         searchBar.setMaxWidth(600);
         canvas.add(searchBar, 0, 40);
+
+        canvas.add(searchBox, 100, 40);
+
     }
 
-// method to get reasonable clock time
+// method to get reasonable/ realistic clock time
+// adds a 0 if needed to make it look like a proper analog clock
     private String clockRandomizer(){
         String result = "";
         int hour = r.nextInt(24); 
@@ -59,6 +64,7 @@ public class UI {
     }
 
     public static void main(String[] args){
-        UI window = new UI();
+        CanvasWindow canvas = new CanvasWindow("Trendmaxxer",600 , 900);
+        UI window = new UI(canvas);
     }
 }
