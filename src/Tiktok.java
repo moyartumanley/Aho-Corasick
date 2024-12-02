@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Tiktok {
+public class Tiktok implements Comparable<Tiktok>{
     private ArrayList<String> hashtags;
     private int playCount;
 
@@ -15,5 +15,10 @@ public class Tiktok {
 
     public int getPlayCount(){
         return this.playCount;
+    }
+
+    @Override
+    public int compareTo(Tiktok other) {
+        return Integer.compare(this.playCount, other.playCount);
     }
 }

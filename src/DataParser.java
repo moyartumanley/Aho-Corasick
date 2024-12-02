@@ -9,13 +9,14 @@ import org.json.JSONObject;
 //setup get data for object put that object into a list/data structure then alter algo
 //dont worry about unicode errors rn
 public class DataParser {
+
+    private ArrayList<Tiktok> listOfTiktoks;
+
     /**
-     * Reads data and collects relevant stats.
+     * Reads data and creates Tiktok objects containing relevant stats.
      * 
      * @param filePath
      */
-
-    private ArrayList<Tiktok> listOfTiktoks;
     private void readData(String filePath) {
         this.listOfTiktoks = new ArrayList<>();
         try {
@@ -36,8 +37,8 @@ public class DataParser {
                         String hashtagName = text.getString("hashtagName");
                         listOfHashtags.add(hashtagName);
                     }
-
                 }
+
                 Tiktok tiktok = new Tiktok(listOfHashtags, Integer.parseInt(playCount));
                 listOfTiktoks.add(tiktok);
             }
@@ -58,9 +59,9 @@ public class DataParser {
      * @throws IOException
      */
     public ArrayList<Tiktok> processData() throws InterruptedException, IOException {
-        DataDownloader downloader = new DataDownloader();
-
-        /* Writes JSON contents to a file. Only have to run if you want to collect updated data from the API. */
+        
+        /* Writes JSON contents to a file. Only have to uncomment if you want to collect updated data from the API. */
+        // DataDownloader downloader = new DataDownloader();
         // downloader.writeToFile();
 
         /* File address of JSON file. */
