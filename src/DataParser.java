@@ -1,39 +1,45 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+//setup get data for object put that object into a list/data structure then alter algo
+//dont worry about unicode errors rn
 public class DataParser {
     /**
      * Reads data and collects relevant stats.
      * 
      * @param filePath
      */
-    private static void readData(String filePath) {
+
+    private ArrayList<Tiktok> listOfTiktoks;
+    private void readData(String filePath) {
+        this.listOfTiktoks = new ArrayList<>();
         try {
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
             JSONObject data = new JSONObject(fileContent);
             JSONArray videos = data.getJSONArray("itemList");
             for (int i = 0; i < videos.length(); i++) {
+                ArrayList<String> listOfHashtags = new ArrayList<>();
                 JSONObject video = videos.getJSONObject(i);
                 JSONObject stats = video.getJSONObject("statsV2");
-                String description = video.getString("desc");
+                // String description = video.getString("desc");
                 String playCount = stats.getString("playCount");
-                System.out.println("Play count: " + playCount);
-                System.out.println("Description: " + description);
 
                 if (video.has("textExtra")) {
                     JSONArray extraText = video.getJSONArray("textExtra");
                     for (int j = 0; j < extraText.length(); j++) {
                         JSONObject text = extraText.getJSONObject(j);
                         String hashtagName = text.getString("hashtagName");
-                        System.out.println("Hashtag Name:" + hashtagName);
+                        listOfHashtags.add(hashtagName);
                     }
 
                 }
+                Tiktok tiktok = new Tiktok(listOfHashtags, Integer.parseInt(playCount));
+                listOfTiktoks.add(tiktok);
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
@@ -41,13 +47,17 @@ public class DataParser {
         }
     }
 
+    public ArrayList<Tiktok> getTiktokList(){
+        return this.listOfTiktoks;
+    }
+
     /**
-     * Outputs relevant info from API data.
+     * Returns a list of Tiktoks collected from API data.
      * 
      * @throws InterruptedException
      * @throws IOException
      */
-    public void processData() throws InterruptedException, IOException {
+    public ArrayList<Tiktok> processData() throws InterruptedException, IOException {
         DataDownloader downloader = new DataDownloader();
 
         /* Writes JSON contents to a file. Only have to run if you want to collect updated data from the API. */
@@ -63,5 +73,9 @@ public class DataParser {
             System.err.println("Error reading or parsing JSON file: " + e.getMessage());
 
         }
+
+        System.out.println(listOfTiktoks.toString());
+
+        return getTiktokList();
     }
 }
