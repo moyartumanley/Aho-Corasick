@@ -9,7 +9,7 @@ public class SearchBoxTest {
 
     public static void main(String[] args) {
         CanvasWindow canvas = new CanvasWindow("Search Box Test", 500, 500);
-        canvas.setBackground(Color.LIGHT_GRAY);
+        canvas.setBackground(Color.WHITE);
 
         List<String> wordList = new ArrayList<>();
         wordList.add("red");

@@ -1,6 +1,5 @@
 import edu.macalester.graphics.*;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,8 @@ public class SearchBox extends GraphicsGroup {
     private Set<String> prioritySearches = new HashSet<>();
 
     private final int HEIGHT = 30;
-    private final int width;
+    private final int WIDTH;
+    private final Color COLOR = new Color(241,241,241);
 
     /**
      * Creates a search box with a list of words as its data.
@@ -24,10 +24,11 @@ public class SearchBox extends GraphicsGroup {
      */
     public SearchBox(int width, List<String> wordList){
         super();
-        this.width = width;
+        WIDTH = width;
 
         background = new Rectangle(0,0,width,HEIGHT);
-        background.setFillColor(Color.WHITE);
+        background.setFillColor(COLOR);
+        background.setStroked(false);
         add(background);
 
         searchBox = new GraphicsText("|",5,HEIGHT / 3 * 2);
@@ -43,7 +44,7 @@ public class SearchBox extends GraphicsGroup {
      */
     public SearchBox(int width, AhoCorasick wordTree){
         super();
-        this.width = width;
+        WIDTH = width;
 
         background = new Rectangle(0,0,width,HEIGHT);
         background.setFillColor(Color.WHITE);
@@ -83,7 +84,7 @@ public class SearchBox extends GraphicsGroup {
     public void updateResults(){
         clearResults();
         if (!text.equals("")){
-            int y = HEIGHT;
+            int y = HEIGHT + 10;
             List<String> results = words.searchSimilarWords(text).stream().limit(10).collect(Collectors.toList());
 
             List<String> priority = results.stream().filter(result -> prioritySearches.contains(result)).collect(Collectors.toList());
@@ -103,9 +104,8 @@ public class SearchBox extends GraphicsGroup {
      * @param y coordinate of the box
      */
     private void makeResultBox(String result, int y){
-        Rectangle background = new Rectangle(0,y,width,HEIGHT); 
-        background.setFillColor(Color.WHITE);
-        background.setStroked(false);
+        Rectangle background = new Rectangle(0,y,WIDTH,HEIGHT); 
+        background.setFillColor(COLOR);
         add(background);
 
         GraphicsText text = new GraphicsText(result,5,HEIGHT / 3 * 2 + y);

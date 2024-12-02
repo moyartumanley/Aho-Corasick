@@ -18,7 +18,6 @@ public class UI {
     private Image wifi;
     private Image searchBar;
     private Random r = new Random();
-    private SearchBox searchBox;
 
     public UI(CanvasWindow canvas){
         setupUI(canvas);
@@ -41,8 +40,6 @@ public class UI {
         searchBar.setMaxHeight(100); 
         searchBar.setMaxWidth(600);
         canvas.add(searchBar, 0, 40);
-
-        canvas.add(searchBox, 100, 40);
 
     }
 
