@@ -47,11 +47,7 @@ public class DataParser {
             System.err.println("Error reading or parsing JSON file: " + e.getMessage());
         }
     }
-
-    public ArrayList<Tiktok> getTiktokList(){
-        return this.listOfTiktoks;
-    }
-
+    
     /**
      * Returns a list of Tiktoks collected from API data.
      * 
@@ -77,6 +73,6 @@ public class DataParser {
 
         System.out.println(listOfTiktoks.toString());
 
-        return getTiktokList();
+        return this.listOfTiktoks;
     }
 }
