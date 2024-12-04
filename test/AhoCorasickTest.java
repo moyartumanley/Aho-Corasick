@@ -270,9 +270,9 @@ public class AhoCorasickTest {
         wordList.add("caa");
         AhoCorasick tree = new AhoCorasick(wordList);
 
-        assertEquals(List.of("a", "ab", "bab", "bc", "bca", "c", "caa"), tree.searchSimilarWords("aa"));
-        assertEquals(List.of("caa", "a","ab"), tree.searchSimilarWords("cac"));
-        assertEquals(List.of("bca", "a","ab", "caa"), tree.searchSimilarWords("bcaa"));
+        assertEquals(List.of("a", "ab", "bab", "bc", "bca", "c", "caa"), tree.searchNotPrefixSimilarWords("aa"));
+        assertEquals(List.of("a","ab"), tree.searchNotPrefixSimilarWords("cac"));
+        assertEquals(List.of("a","ab", "caa"), tree.searchNotPrefixSimilarWords("bcaa"));
     }
 
     @Test
@@ -294,9 +294,9 @@ public class AhoCorasickTest {
         wordList.add("reed");
         AhoCorasick tree = new AhoCorasick(wordList);
 
-        assertEquals(List.of("bear", "ear","earth"), tree.searchSimilarWords("bear"));
+        assertEquals(List.of("ear","earth"), tree.searchNotPrefixSimilarWords("bear"));
         
-        assertEquals(List.of("reed", "ear","earth", "eat"), tree.searchSimilarWords("ree"));
+        assertEquals(List.of("ear","earth", "eat"), tree.searchNotPrefixSimilarWords("ree"));
     }
     
 }

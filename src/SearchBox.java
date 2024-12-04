@@ -1,6 +1,7 @@
 import edu.macalester.graphics.*;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -127,9 +128,15 @@ public class SearchBox extends GraphicsGroup {
         clearResults();
         if (!text.equals("")){
             int y = HEIGHT + 10;
-            List<String> results = words.searchSimilarWords(text).stream().limit(10).collect(Collectors.toList());
+
+            List<String> results = words.getWordsForPrefix(text);
+            
+            List<String> similarResults = words.searchNotPrefixSimilarWords(text).stream().filter(r -> !results.contains(r)).limit(10 - results.size()).collect(Collectors.toList());
+
+            results.addAll(similarResults);
 
             List<String> priority = results.stream().filter(result -> prioritySearches.contains(result)).collect(Collectors.toList());
+            
             results.removeAll(priority);
             priority.addAll(results);
         

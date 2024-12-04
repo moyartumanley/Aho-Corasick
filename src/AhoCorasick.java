@@ -153,7 +153,7 @@ public class AhoCorasick {
      * @param string
      * @return resulting list of similar words
      */
-    public ArrayList<String> searchSimilarWords(String string){
+    public ArrayList<String> searchNotPrefixSimilarWords(String string){
         ArrayList<String> result = new ArrayList<>();
 
         TreeNode prefixNode = root;
@@ -170,15 +170,15 @@ public class AhoCorasick {
             }
         }
 
-        String largestPrefix = prefixNode.string;
-
-        result.addAll(getWordsForPrefix(largestPrefix));
 
         if (prefixNode.terminalSuffix!= null && !prefixNode.suffix.equals(prefixNode.terminalSuffix)){
             result.addAll(getWordsForPrefix(prefixNode.terminalSuffix.string));
         }
 
-        result.addAll(getWordsForPrefix(prefixNode.suffix.string));
+        if (!prefixNode.suffix.string.equals("")){
+            result.addAll(getWordsForPrefix(prefixNode.suffix.string));
+        }
+        
 
         while(result.contains("")){ //removes all empty strings
             result.remove("");
