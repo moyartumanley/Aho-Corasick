@@ -1,5 +1,6 @@
 import edu.macalester.graphics.*;
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,6 +15,8 @@ public class SearchBox extends GraphicsGroup {
     private Rectangle background;
     private AhoCorasick words;
     private Set<String> prioritySearches = new HashSet<>();
+
+    //TODO: Create a hash map from hastag to view count. Then in updateResults() sort the list by comparing the hashtag's values
 
     public final int HEIGHT = 30;
     public final int WIDTH;
@@ -154,11 +157,24 @@ public class SearchBox extends GraphicsGroup {
      */
     private void makeResultBox(String result, int y){
         Rectangle background = new Rectangle(0,y,WIDTH,HEIGHT); 
-        background.setFillColor(COLOR);
+        background.setFillColor(Color.WHITE);
         add(background);
 
         GraphicsText text = new GraphicsText(result,5,HEIGHT / 3 * 2 + y);
         add(text);
+
+        Image sideImage;
+        if (prioritySearches.contains(result)){
+            sideImage = new Image("UI elements" + File.separator + "UI icon_pastsearched.png");
+        }
+        else{
+            sideImage = new Image("UI elements" + File.separator + "UI icon_search.png");
+        }
+
+        sideImage.setMaxHeight(HEIGHT - 10); 
+        sideImage.setMaxWidth(HEIGHT - 10);
+        sideImage.setPosition(WIDTH - sideImage.getWidth() - 10, y + 5);
+        add(sideImage);
     }
 
     /**
