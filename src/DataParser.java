@@ -2,12 +2,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-//setup get data for object put that object into a list/data structure then alter algo
-//dont worry about unicode errors rn
+
+// setup get data for object put that object into a list/data structure then alter algo
+// dont worry about unicode errors rn
 public class DataParser {
 
     private ArrayList<Tiktok> listOfTiktoks;
@@ -47,7 +49,7 @@ public class DataParser {
             System.err.println("Error reading or parsing JSON file: " + e.getMessage());
         }
     }
-    
+
     /**
      * Returns a list of Tiktoks collected from API data.
      * 
@@ -55,8 +57,11 @@ public class DataParser {
      * @throws IOException
      */
     public ArrayList<Tiktok> processData() throws InterruptedException, IOException {
-        
-        /* Writes JSON contents to a file. Only have to uncomment if you want to collect updated data from the API. */
+
+        /*
+         * Writes JSON contents to a file. Only have to uncomment if you want to collect updated data from
+         * the API.
+         */
         // DataDownloader downloader = new DataDownloader();
         // downloader.writeToFile();
 
@@ -71,8 +76,29 @@ public class DataParser {
 
         }
 
-        System.out.println(listOfTiktoks.toString());
+        // System.out.println(listOfTiktoks.toString());
 
         return this.listOfTiktoks;
     }
+
+    public HashMap<String, Integer> getHashtagMap() throws InterruptedException, IOException {
+        HashMap<String, Integer> hashtagMap = new HashMap<>();
+        processData();
+        for (Tiktok tiktok : listOfTiktoks) {
+            ArrayList<String> hashtags = tiktok.getHashtags();
+            int playCount = tiktok.getPlayCount();
+            for (String hashtag : hashtags) {
+                if (!hashtagMap.containsKey(hashtag)) {
+                    hashtagMap.put(hashtag, playCount);
+                } else {
+                    int newViews = hashtagMap.get(hashtag) + playCount;
+                    hashtagMap.put(hashtag, newViews);
+                }
+            }
+        }
+        return hashtagMap;
+    }
+
+    // TODO: use hashmap to get hashtags as keys and playcounts as values, for each video that has that
+    // hastag add that tiktoks playCount to the value of that hashmap
 }

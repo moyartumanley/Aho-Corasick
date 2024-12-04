@@ -17,6 +17,7 @@ public class MainWindow {
         List<Tiktok> tiktoks;
         try {
             tiktoks = dataParser.processData();
+            System.out.println(dataParser.getHashtagMap().entrySet().toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
             return;
