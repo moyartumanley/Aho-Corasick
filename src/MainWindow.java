@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import edu.macalester.graphics.*;
@@ -11,13 +12,20 @@ public class MainWindow {
 
         UI ui = new UI(canvas);
 
-        List<String> wordList = new ArrayList<String>();
-        wordList.add("red");
-        wordList.add("read");
-        wordList.add("dread");
-        wordList.add("bead");
+        DataParser dataParser = new DataParser();
 
-        searchBox = new SearchBox(370, wordList);
+        List<Tiktok> tiktoks;
+        try {
+            tiktoks = dataParser.processData();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        searchBox = new TiktokSearchBox(370, tiktoks);
         searchBox.setCenter(canvas.getWidth() / 2,90);
         canvas.add(searchBox);
 

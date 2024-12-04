@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AhoCorasick {
     
@@ -33,6 +34,19 @@ public class AhoCorasick {
     }
 
     /**
+     * Aho-Corasick tree with all of the words in wordList. After adding everything, automatically set suffixes. 
+     * To avoid bugs, do not alter the tree that is made using this constructor
+     * @param wordList
+     */
+    public AhoCorasick(Set<String> wordList){
+        root = new TreeNode(); //null node
+        root.suffix = root;
+
+        add(wordList);
+        updateSuffixes();
+    }
+
+    /**
      * Adds all of the words from the list to the tree where each letter in sequence is added as a node
      * If a word, is already in the tree, then nothing will happen in relation to that word.
      * @param wordList
@@ -42,6 +56,18 @@ public class AhoCorasick {
             add(wordList.get(i));
         }
     }
+
+    /**
+     * Adds all of the words from the list to the tree where each letter in sequence is added as a node
+     * If a word, is already in the tree, then nothing will happen in relation to that word.
+     * @param wordList
+     */
+    public void add(Set<String> wordList){
+        for (String word : wordList) {
+            add(word);
+        }
+    }
+
 
     /**
      * Adds the word to the tree where each letter in sequence is added as a node

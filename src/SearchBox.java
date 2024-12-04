@@ -1,5 +1,6 @@
 import edu.macalester.graphics.*;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,14 +9,32 @@ import java.util.stream.Collectors;
 public class SearchBox extends GraphicsGroup {
 
     private String text = "";
-    private GraphicsText searchBox;
+    private GraphicsText searchBoxText;
     private Rectangle background;
     private AhoCorasick words;
     private Set<String> prioritySearches = new HashSet<>();
 
-    private final int HEIGHT = 30;
-    private final int WIDTH;
-    private final Color COLOR = new Color(241,241,241);
+    public final int HEIGHT = 30;
+    public final int WIDTH;
+    public final Color COLOR = new Color(241,241,241);
+
+    /**
+     * Creates a search box.
+     * @param width
+     * @param wordList
+     */
+    public SearchBox (int width){
+        super();
+        WIDTH = width;
+
+        background = new Rectangle(0,0,width,HEIGHT);
+        background.setFillColor(COLOR);
+        background.setStroked(false);
+        add(background);
+
+        searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        add(searchBoxText);
+    }
 
     /**
      * Creates a search box with a list of words as its data.
@@ -31,11 +50,11 @@ public class SearchBox extends GraphicsGroup {
         background.setStroked(false);
         add(background);
 
-        searchBox = new GraphicsText("|",5,HEIGHT / 3 * 2);
-        add(searchBox);
+        searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        add(searchBoxText);
 
         words = new AhoCorasick(wordList);
-    }
+    }  
 
     /**
      * Creates a search box with a tree of words as its data.
@@ -50,10 +69,33 @@ public class SearchBox extends GraphicsGroup {
         background.setFillColor(Color.WHITE);
         add(background);
 
-        searchBox = new GraphicsText("|",5,HEIGHT / 3 * 2);
-        add(searchBox);
+        searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        add(searchBoxText);
 
         words = wordTree;
+    }
+
+    /**
+     * Set the words stored within the search box.
+     * @param wordList
+     */
+    public void setWords(List<String> wordList){
+        words = new AhoCorasick(wordList);
+    }
+     /**
+     * Set the words stored within the search box.
+     * @param wordList
+     */
+    public void setWords(AhoCorasick wordList){
+        words = wordList;
+    }
+
+    public void setBackground(Rectangle background){
+        this.background = background;
+    }
+
+    public void setSearchBoxText(GraphicsText text){
+        this.searchBoxText = text;
     }
 
     /**
@@ -62,7 +104,7 @@ public class SearchBox extends GraphicsGroup {
      */
     public void addCharacter(Character c){
         text += c;
-        searchBox.setText(text + "|");
+        searchBoxText.setText(text + "|");
         updateResults();
     }
 
@@ -72,7 +114,7 @@ public class SearchBox extends GraphicsGroup {
     public void deleteLastCharacter(){
         if (text.length() > 0){
             text = text.substring(0, text.length() - 1);
-            searchBox.setText(text + "|");
+            searchBoxText.setText(text + "|");
             updateResults();
         }
         
@@ -118,7 +160,7 @@ public class SearchBox extends GraphicsGroup {
     private void clearResults(){
         removeAll();
         add(background);
-        add(searchBox);
+        add(searchBoxText);
 
     }
 
