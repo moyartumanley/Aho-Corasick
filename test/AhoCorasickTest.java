@@ -316,7 +316,6 @@ public class AhoCorasickTest {
         AhoCorasick tree = new AhoCorasick(wordList);
 
         assertEquals(List.of("ear","earth"), tree.searchNotPrefixSimilarWords("bear"));
-        
         assertEquals(List.of("ear","earth", "eat"), tree.searchNotPrefixSimilarWords("ree"));
     }
     

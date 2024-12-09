@@ -16,8 +16,6 @@ public class SearchBox extends GraphicsGroup {
     private AhoCorasick words;
     private Set<String> prioritySearches = new HashSet<>();
 
-    //TODO: Create a hash map from hastag to view count. Then in updateResults() sort the list by comparing the hashtag's values
-
     public final int HEIGHT = 30;
     public final int WIDTH;
     public final Color COLOR = new Color(241,241,241);
@@ -160,8 +158,8 @@ public class SearchBox extends GraphicsGroup {
         background.setFillColor(Color.WHITE);
         add(background);
 
-        GraphicsText text = new GraphicsText(result,5,HEIGHT / 3 * 2 + y);
-        add(text);
+        GraphicsText resultText = new GraphicsText(result,5,HEIGHT / 3 * 2 + y);
+        add(resultText);
 
         Image sideImage;
         if (prioritySearches.contains(result)){
@@ -195,7 +193,6 @@ public class SearchBox extends GraphicsGroup {
         if(words.contains(text)){
             prioritySearches.add(text);
         }
-        
     }
 
     public String getText(){
@@ -209,7 +206,4 @@ public class SearchBox extends GraphicsGroup {
     public AhoCorasick getWords(){
         return words;
     }
-    
-
-
 }

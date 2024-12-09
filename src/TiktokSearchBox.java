@@ -26,8 +26,6 @@ public class TiktokSearchBox extends SearchBox{
             e.printStackTrace();
         }
 
-
-
         Rectangle background = new Rectangle(0,0,width,HEIGHT);
         background.setFillColor(COLOR);
         background.setStroked(false);
@@ -51,6 +49,7 @@ public class TiktokSearchBox extends SearchBox{
 
             List<String> results = getWords().getWordsForPrefix(getText());
             Collections.sort(results, new HashtagComparator());
+            Collections.reverse(results);
             
             List<String> similarResults = getWords().searchNotPrefixSimilarWords(getText())
                                                     .stream()
@@ -58,11 +57,13 @@ public class TiktokSearchBox extends SearchBox{
                                                     .limit(10 - results.size())
                                                     .collect(Collectors.toList());
             Collections.sort(similarResults, new HashtagComparator());
+            Collections.reverse(similarResults);
 
             results.addAll(similarResults);
 
             List<String> priority = results.stream().filter(result -> getPriority().contains(result)).collect(Collectors.toList());
             Collections.sort(priority, new HashtagComparator());
+            Collections.reverse(priority);
             
             results.removeAll(priority);
             priority.addAll(results);
@@ -73,4 +74,23 @@ public class TiktokSearchBox extends SearchBox{
             }
         }
     }
+
+    @Override
+        public void makeResultBox(String result, int y){
+            super.makeResultBox(result, y);
+
+            DataParser dataParser = new DataParser();
+            HashMap<String, Integer> hashtagMap = new HashMap<>();
+            try {
+                hashtagMap = dataParser.getHashtagMap();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String views = hashtagMap.get(result) + "";
+            GraphicsText text = new GraphicsText(views, WIDTH - views.length() - 100, HEIGHT / 3 * 2 + y);
+            add(text);
+        }
 }

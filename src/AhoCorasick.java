@@ -261,7 +261,7 @@ public class AhoCorasick {
     /**
      * Sets suffix and terminal suffix pointers for every node. 
      */
-    public void updateSuffixes(){ //TODO: make pointers that show what the node is a suffix of for easier navigation. Maybe also add traversal list. 
+    public void updateSuffixes(){ 
         recursiveSetSuffixes(root);
         recursiveSetTerminalSuffixes(root);
     }
