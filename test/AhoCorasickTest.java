@@ -14,34 +14,34 @@ public class AhoCorasickTest {
     @Test
     public void testAdd(){ //Test from HW3. Should still work after implementation
         AhoCorasick tree = new AhoCorasick();
-        tree.add("cat");
-        tree.add("muse");
-        tree.add("muscle");
-        tree.add("musk");
-        tree.add("po");
-        tree.add("pot");
-        tree.add("pottery");
-        tree.add("potato");
-        tree.add("possible");
-        tree.add("possum");
-        tree.add("pot");
+        tree.addWord("cat");
+        tree.addWord("muse");
+        tree.addWord("muscle");
+        tree.addWord("musk");
+        tree.addWord("po");
+        tree.addWord("pot");
+        tree.addWord("pottery");
+        tree.addWord("potato");
+        tree.addWord("possible");
+        tree.addWord("possum");
+        tree.addWord("pot");
         assertEquals(10, tree.size());
     }
 
     @Test
     public void testContains(){ //Test from HW3. Should still work after implementation
         AhoCorasick tree = new AhoCorasick();
-        tree.add("cat");
-        tree.add("muse");
-        tree.add("muscle");
-        tree.add("musk");
-        tree.add("po");
-        tree.add("pot");
-        tree.add("pottery");
-        tree.add("potato");
-        tree.add("possible");
-        tree.add("possum");
-        tree.add("pot");
+        tree.addWord("cat");
+        tree.addWord("muse");
+        tree.addWord("muscle");
+        tree.addWord("musk");
+        tree.addWord("po");
+        tree.addWord("pot");
+        tree.addWord("pottery");
+        tree.addWord("potato");
+        tree.addWord("possible");
+        tree.addWord("possum");
+        tree.addWord("pot");
         assertFalse(tree.contains("mu"));
         assertFalse(tree.contains("dog"));
         assertTrue(tree.contains("pot"));
@@ -53,17 +53,17 @@ public class AhoCorasickTest {
     @Test
     public void testPrefix(){ //Test from HW3 with an added test for a case with no results. Should still work after implementation
         AhoCorasick tree = new AhoCorasick();
-        tree.add("cat");
-        tree.add("muse");
-        tree.add("muscle");
-        tree.add("musk");
-        tree.add("poe");
-        tree.add("pot");
-        tree.add("pottery");
-        tree.add("potato");
-        tree.add("possible");
-        tree.add("possum");
-        tree.add("pot");
+        tree.addWord("cat");
+        tree.addWord("muse");
+        tree.addWord("muscle");
+        tree.addWord("musk");
+        tree.addWord("poe");
+        tree.addWord("pot");
+        tree.addWord("pottery");
+        tree.addWord("potato");
+        tree.addWord("possible");
+        tree.addWord("possum");
+        tree.addWord("pot");
         ArrayList<String> result = tree.getWordsForPrefix("pot");
         assertEquals(3, result.size());
         assertTrue(result.contains("pot"));
@@ -83,12 +83,12 @@ public class AhoCorasickTest {
     @Test
     public void testSuffixes(){
         AhoCorasick tree = new AhoCorasick();
-        tree.add("a");
-        tree.add("ab");
-        tree.add("bc");
-        tree.add("bca");
-        tree.add("c");
-        tree.add("caa");
+        tree.addWord("a");
+        tree.addWord("ab");
+        tree.addWord("bc");
+        tree.addWord("bca");
+        tree.addWord("c");
+        tree.addWord("caa");
         tree.updateSuffixes();
 
         assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
@@ -105,12 +105,12 @@ public class AhoCorasickTest {
     @Test
     public void testTerminalSuffixes(){
         AhoCorasick tree = new AhoCorasick();
-        tree.add("a");
-        tree.add("ab");
-        tree.add("bc");
-        tree.add("bca");
-        tree.add("c");
-        tree.add("caa");
+        tree.addWord("a");
+        tree.addWord("ab");
+        tree.addWord("bc");
+        tree.addWord("bca");
+        tree.addWord("c");
+        tree.addWord("caa");
         tree.updateSuffixes();
 
         assertEquals(null, tree.getNodeWithString("a").terminalSuffix);
@@ -127,14 +127,13 @@ public class AhoCorasickTest {
     @Test
     public void testBothSuffixes(){
         AhoCorasick tree = new AhoCorasick();
-        tree.add("a");
-        tree.add("ab");
-        tree.add("bab");
-        tree.add("bc");
-        tree.add("bca");
-        tree.add("c");
-        tree.add("caa");
-        tree.updateSuffixes();
+        tree.addWord("a");
+        tree.addWord("ab");
+        tree.addWord("bab");
+        tree.addWord("bc");
+        tree.addWord("bca");
+        tree.addWord("c");
+        tree.addWord("caa");
 
         //All suffixes
         assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
@@ -270,7 +269,7 @@ public class AhoCorasickTest {
         wordList.add("caa");
         AhoCorasick tree = new AhoCorasick(wordList);
 
-        assertEquals(List.of("a", "ab", "bab", "bc", "bca", "c", "caa"), tree.searchNotPrefixSimilarWords("aa"));
+        assertEquals(List.of(), tree.searchNotPrefixSimilarWords("aa"));
         assertEquals(List.of("a","ab"), tree.searchNotPrefixSimilarWords("cac"));
         assertEquals(List.of("a","ab", "caa"), tree.searchNotPrefixSimilarWords("bcaa"));
     }

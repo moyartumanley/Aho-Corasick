@@ -21,28 +21,25 @@ public class AhoCorasick {
     }
 
     /**
-     * Aho-Corasick tree with all of the words in wordList. After adding everything, automatically set suffixes. 
-     * To avoid bugs, do not alter the tree that is made using this constructor
-     * @param wordList
+     * Aho-Corasick tree with all of the words in wordList. 
      */
     public AhoCorasick(List<String> wordList){
         root = new TreeNode(); //null node
         root.suffix = root;
 
-        add(wordList);
+        addWords(wordList);
         updateSuffixes();
     }
 
     /**
-     * Aho-Corasick tree with all of the words in wordList. After adding everything, automatically set suffixes. 
-     * To avoid bugs, do not alter the tree that is made using this constructor
+     * Aho-Corasick tree with all of the words in wordList. 
      * @param wordList
      */
     public AhoCorasick(Set<String> wordList){
         root = new TreeNode(); //null node
         root.suffix = root;
 
-        add(wordList);
+        addWords(wordList);
         updateSuffixes();
     }
 
@@ -51,9 +48,9 @@ public class AhoCorasick {
      * If a word, is already in the tree, then nothing will happen in relation to that word.
      * @param wordList
      */
-    public void add(List<String> wordList){
+    public void addWords(List<String> wordList){
         for (int i = 0; i < wordList.size(); i++){
-            add(wordList.get(i));
+            addWord(wordList.get(i));
         }
     }
 
@@ -62,9 +59,9 @@ public class AhoCorasick {
      * If a word, is already in the tree, then nothing will happen in relation to that word.
      * @param wordList
      */
-    public void add(Set<String> wordList){
+    public void addWords(Set<String> wordList){
         for (String word : wordList) {
-            add(word);
+            addWord(word);
         }
     }
 
@@ -74,7 +71,7 @@ public class AhoCorasick {
      * If the word, is already in the tree, then this has no effect.
      * @param word
      */
-    public void add(String word){
+    public void addWord(String word){
         if (!contains(word)){ // no effect if word already exists
             TreeNode current = root;
 
@@ -221,7 +218,6 @@ public class AhoCorasick {
 
     /**
      * Sets suffix and terminal suffix pointers for every node. 
-     * This method should be called after adding all strings to the tree or else there will be errors.
      */
     public void updateSuffixes(){ //TODO: make pointers that show what the node is a suffix of for easier navigation. Maybe also add traversal list. 
         recursiveSetSuffixes(root);
