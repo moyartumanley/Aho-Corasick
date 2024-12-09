@@ -12,21 +12,7 @@ public class MainWindow {
 
         UI ui = new UI(canvas);
 
-        DataParser dataParser = new DataParser();
-
-        List<Tiktok> tiktoks;
-        try {
-            tiktoks = dataParser.processData();
-            System.out.println(dataParser.getHashtagMap().entrySet().toString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        searchBox = new TiktokSearchBox(370, tiktoks);
+        searchBox = new TiktokSearchBox(370);
         searchBox.setCenter(canvas.getWidth() / 2,90);
         canvas.add(searchBox);
 
@@ -36,6 +22,8 @@ public class MainWindow {
             if (event.getKey().equals(Key.DELETE_OR_BACKSPACE)){
                 searchBox.deleteLastCharacter();
             };});
+
+        canvas.onClick(e -> canvas.getElementAt(e.getPosition()));
     }
     
 

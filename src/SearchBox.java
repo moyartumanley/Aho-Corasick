@@ -57,7 +57,7 @@ public class SearchBox extends GraphicsGroup {
         searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
         add(searchBoxText);
 
-        words = new AhoCorasick(wordList);
+        setWords(new AhoCorasick(wordList));
     }  
 
     /**
@@ -76,7 +76,7 @@ public class SearchBox extends GraphicsGroup {
         searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
         add(searchBoxText);
 
-        words = wordTree;
+        setWords(wordTree);
     }
 
     /**
@@ -155,7 +155,7 @@ public class SearchBox extends GraphicsGroup {
      * @param result text
      * @param y coordinate of the box
      */
-    private void makeResultBox(String result, int y){
+    public void makeResultBox(String result, int y){
         Rectangle background = new Rectangle(0,y,WIDTH,HEIGHT); 
         background.setFillColor(Color.WHITE);
         add(background);
@@ -180,7 +180,7 @@ public class SearchBox extends GraphicsGroup {
     /**
      * Clears all results.
      */
-    private void clearResults(){
+    public void clearResults(){
         removeAll();
         add(background);
         add(searchBoxText);
@@ -196,6 +196,18 @@ public class SearchBox extends GraphicsGroup {
             prioritySearches.add(text);
         }
         
+    }
+
+    public String getText(){
+        return text;
+    }
+
+    public Set<String> getPriority(){
+        return prioritySearches;
+    }
+
+    public AhoCorasick getWords(){
+        return words;
     }
     
 
