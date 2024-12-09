@@ -72,14 +72,25 @@ public class AhoCorasick {
      * @param word
      */
     public void addWord(String word){
-        if (!contains(word)){ // no effect if word already exists
+        if (add(word)){
+        getNodeWithString(word).inDictionary = true;
+        size++;
+            }
+        }
+
+    /**
+     * Adds the string ot the tree.
+     *  Returns true if successful, false otherwise.
+     */ 
+    public boolean add(String string){
+        if (!contains(string)){ // no effect if word already exists
             TreeNode current = root;
 
-            for (int i = 0; i < word.length(); i++){ // iterates through each character in the word, going from left to right
-                char currentChar = word.charAt(i); 
+            for (int i = 0; i < string.length(); i++){ // iterates through each character in the word, going from left to right
+                char currentChar = string.charAt(i); 
 
                 if (!current.children.containsKey(currentChar)){ // if letter doesn't exist at that branch, put it in the tree
-                    current.children.put(currentChar, new TreeNode(word.substring(0, i + 1)));
+                    current.children.put(currentChar, new TreeNode(string.substring(0, i + 1)));
                 }
 
                 current = current.children.get(currentChar);
@@ -88,10 +99,10 @@ public class AhoCorasick {
                     current.suffix = root;
                 }
             }
-            current.inDictionary = true;
-            size++;
-        }
+            return true;
     }
+    return false;
+}
 
     /**
      * Checks whether the word has been added to the tree

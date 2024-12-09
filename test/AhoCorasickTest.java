@@ -134,6 +134,7 @@ public class AhoCorasickTest {
         tree.addWord("bca");
         tree.addWord("c");
         tree.addWord("caa");
+        tree.updateSuffixes();
 
         //All suffixes
         assertEquals(tree.getNodeWithString(""), tree.getNodeWithString("a").suffix);
