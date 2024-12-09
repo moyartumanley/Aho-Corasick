@@ -29,7 +29,7 @@ public class AhoCorasickTest {
     }
 
     @Test
-    public void testContains(){ //Test from HW3. Should still work after implementation
+    public void testContains(){ //Altered test from HW3. Should still work after implementation
         AhoCorasick tree = new AhoCorasick();
         tree.addWord("cat");
         tree.addWord("muse");
@@ -42,7 +42,29 @@ public class AhoCorasickTest {
         tree.addWord("possible");
         tree.addWord("possum");
         tree.addWord("pot");
-        assertFalse(tree.contains("mu"));
+        assertTrue(tree.contains("mu"));
+        assertFalse(tree.contains("dog"));
+        assertTrue(tree.contains("pot"));
+        assertTrue(tree.contains("pottery"));
+        assertTrue(tree.contains("possum"));
+        assertEquals(10, tree.size());
+    }
+
+    @Test
+    public void testContainsWord(){ //Test from HW3. Should still work after implementation
+        AhoCorasick tree = new AhoCorasick();
+        tree.addWord("cat");
+        tree.addWord("muse");
+        tree.addWord("muscle");
+        tree.addWord("musk");
+        tree.addWord("po");
+        tree.addWord("pot");
+        tree.addWord("pottery");
+        tree.addWord("potato");
+        tree.addWord("possible");
+        tree.addWord("possum");
+        tree.addWord("pot");
+        assertTrue(tree.contains("mu"));
         assertFalse(tree.contains("dog"));
         assertTrue(tree.contains("pot"));
         assertTrue(tree.contains("pottery"));
@@ -257,7 +279,6 @@ public class AhoCorasickTest {
         assertEquals(tree.getNodeWithString("a"), tree.getNodeWithString("caa").terminalSuffix);
     }
 
-
     @Test
     public void testSearchForAlternativeWords(){
         List<String> wordList = new ArrayList<>();
@@ -270,9 +291,9 @@ public class AhoCorasickTest {
         wordList.add("caa");
         AhoCorasick tree = new AhoCorasick(wordList);
 
-        assertEquals(List.of(), tree.searchNotPrefixSimilarWords("aa"));
-        assertEquals(List.of("a","ab"), tree.searchNotPrefixSimilarWords("cac"));
-        assertEquals(List.of("a","ab", "caa"), tree.searchNotPrefixSimilarWords("bcaa"));
+        assertEquals(List.of("a","ab"), tree.searchNotPrefixSimilarWords("aa"));
+        assertEquals(List.of("c","caa"), tree.searchNotPrefixSimilarWords("cac"));
+        assertEquals(List.of("caa"), tree.searchNotPrefixSimilarWords("bcaa"));
     }
 
     @Test

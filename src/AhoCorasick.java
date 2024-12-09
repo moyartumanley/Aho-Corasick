@@ -72,25 +72,14 @@ public class AhoCorasick {
      * @param word
      */
     public void addWord(String word){
-        if (add(word)){
-        getNodeWithString(word).inDictionary = true;
-        size++;
-            }
-        }
-
-    /**
-     * Adds the string ot the tree.
-     *  Returns true if successful, false otherwise.
-     */ 
-    public boolean add(String string){
-        if (!contains(string)){ // no effect if word already exists
+        if (!containsWord(word)){ // no effect if word already exists
             TreeNode current = root;
 
-            for (int i = 0; i < string.length(); i++){ // iterates through each character in the word, going from left to right
-                char currentChar = string.charAt(i); 
+            for (int i = 0; i < word.length(); i++){ // iterates through each character in the word, going from left to right
+                char currentChar = word.charAt(i); 
 
                 if (!current.children.containsKey(currentChar)){ // if letter doesn't exist at that branch, put it in the tree
-                    current.children.put(currentChar, new TreeNode(string.substring(0, i + 1)));
+                    current.children.put(currentChar, new TreeNode(word.substring(0, i + 1)));
                 }
 
                 current = current.children.get(currentChar);
@@ -99,17 +88,27 @@ public class AhoCorasick {
                     current.suffix = root;
                 }
             }
-            return true;
+        getNodeWithString(word).inDictionary = true;
+        size++;
+        }
     }
-    return false;
-}
 
     /**
-     * Checks whether the word has been added to the tree
+     * Checks whether the string exists in the tree
      * @param word
      * @return true if contained in the tree.
      */
-    public boolean contains(String word){
+    public boolean contains(String string){
+        TreeNode wordNode = getNodeWithString(string);
+        return wordNode != null;
+    }
+
+    /**
+     * Checks whether the word exists in the tree
+     * @param word
+     * @return true if contained in the tree.
+     */
+    public boolean containsWord(String word){
         TreeNode wordNode = getNodeWithString(word);
         return wordNode != null && wordNode.inDictionary;
     }
@@ -163,14 +162,15 @@ public class AhoCorasick {
      */
     public ArrayList<String> searchNotPrefixSimilarWords(String string){
         ArrayList<String> result = new ArrayList<>();
+        String stringCopy = string + "";
 
         TreeNode prefixNode = root;
-        while (string.length() > 0){ // loop to get to the right node containing the string
+        while (stringCopy.length() > 0){ // loop to get to the right node containing the string
 
-            char currentChar = string.charAt(0);
+            char currentChar = stringCopy.charAt(0);
 
             if (prefixNode.children.containsKey(currentChar)){
-                string = string.substring(1, string.length());
+                stringCopy = stringCopy.substring(1, stringCopy.length());
                 prefixNode = prefixNode.children.get(currentChar);
             }
             else{
@@ -178,23 +178,50 @@ public class AhoCorasick {
             }
         }
 
-
-        if (prefixNode.terminalSuffix!= null && !prefixNode.suffix.equals(prefixNode.terminalSuffix)){
-            result.addAll(getWordsForPrefix(prefixNode.terminalSuffix.string));
-        }
-
-        if (!prefixNode.suffix.string.equals("")){
-            result.addAll(getWordsForPrefix(prefixNode.suffix.string));
-        }
+        result.addAll(getWordsContainingSuffix(string));
         
 
-        while(result.contains("")){ //removes all empty strings
+        while(result.contains("")){ //removes all empty strings just in case
             result.remove("");
         }
 
-        LinkedHashSet<String> removingDups = new LinkedHashSet<>(result);
+        LinkedHashSet<String> removingDups = new LinkedHashSet<>(result); //removing duplicates just in case
         result = new ArrayList<>(removingDups);
         
+        return result;
+    }
+
+    private List<String> getWordsContainingSuffix(String string){
+        List<String> result = new ArrayList<>();
+
+        String suffix = "";
+        String terminalSuffix = "";
+        boolean foundSuffix = false;
+        boolean foundTerminalSuffix = false;
+
+        for(int i = 1; i < string.length(); i++){
+            String substring = (string.substring(i));
+            if (!foundSuffix && contains(substring)){
+                suffix = substring;
+                foundSuffix = true;
+            }
+            if (!foundTerminalSuffix && containsWord(substring) && getNodeWithString(substring).inDictionary){
+                terminalSuffix = substring;
+                foundTerminalSuffix= true;
+            }
+            if(foundSuffix && foundTerminalSuffix){
+                break;
+            }
+        }
+
+        if (foundTerminalSuffix && !suffix.equals(terminalSuffix)){
+            result.addAll(getWordsForPrefix(terminalSuffix));
+        }
+
+        if (!suffix.equals("")){
+            result.addAll(getWordsForPrefix(suffix));
+        }
+
         return result;
     }
 
@@ -225,6 +252,10 @@ public class AhoCorasick {
             }
         }
         return current;
+    }
+
+    public void clearSuffixes(){
+
     }
 
     /**
