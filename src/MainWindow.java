@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import edu.macalester.graphics.*;
 
 import edu.macalester.graphics.events.Key;
@@ -22,8 +19,6 @@ public class MainWindow {
             if (event.getKey().equals(Key.DELETE_OR_BACKSPACE)){
                 searchBox.deleteLastCharacter();
             };});
-
-        canvas.onClick(e -> canvas.getElementAt(e.getPosition()));
     }
     
 

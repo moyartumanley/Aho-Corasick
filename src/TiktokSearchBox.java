@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Rectangle;
 
@@ -26,12 +27,12 @@ public class TiktokSearchBox extends SearchBox{
             e.printStackTrace();
         }
 
-        Rectangle background = new Rectangle(0,0,width,HEIGHT);
+        Rectangle background = new Rectangle(0,0,width,BOX_HEIGHT);
         background.setFillColor(COLOR);
         background.setStroked(false);
         setBackground(background);
 
-        GraphicsText text = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        GraphicsText text = new GraphicsText("|",5,BOX_HEIGHT / 3 * 2);
         setSearchBoxText(text);
 
         Set<String> listOfHashtags = new HashSet<String>();
@@ -45,7 +46,7 @@ public class TiktokSearchBox extends SearchBox{
     public void updateResults(){
         clearResults();
         if (!getText().equals("")){
-            int y = HEIGHT + 10;
+            int y = BOX_HEIGHT + 10;
 
             List<String> results = getWords().getWordsForPrefix(getText());
             Collections.sort(results, new HashtagComparator());
@@ -70,7 +71,7 @@ public class TiktokSearchBox extends SearchBox{
         
             for(int i = 0; i < priority.size(); i++){
                 makeResultBox(priority.get(i), y);
-                y += HEIGHT;
+                y += BOX_HEIGHT;
             }
         }
     }
@@ -90,7 +91,7 @@ public class TiktokSearchBox extends SearchBox{
             }
 
             String views = hashtagMap.get(result) + "";
-            GraphicsText text = new GraphicsText(views, WIDTH - views.length() - 100, HEIGHT / 3 * 2 + y);
+            GraphicsText text = new GraphicsText(views, WIDTH - views.length() - 100, BOX_HEIGHT / 3 * 2 + y);
             add(text);
         }
 }

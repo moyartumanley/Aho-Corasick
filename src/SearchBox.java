@@ -1,11 +1,7 @@
 import edu.macalester.graphics.*;
 import java.awt.Color;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SearchBox extends GraphicsGroup {
@@ -14,9 +10,10 @@ public class SearchBox extends GraphicsGroup {
     private GraphicsText searchBoxText;
     private Rectangle background;
     private AhoCorasick words;
-    private Set<String> prioritySearches = new HashSet<>();
+    private Deque<String> prioritySearches = new ArrayDeque<String>();
+    private int totalHeight;
 
-    public final int HEIGHT = 30;
+    public final int BOX_HEIGHT = 30;
     public final int WIDTH;
     public final Color COLOR = new Color(241,241,241);
 
@@ -29,13 +26,14 @@ public class SearchBox extends GraphicsGroup {
         super();
         WIDTH = width;
 
-        background = new Rectangle(0,0,width,HEIGHT);
+        background = new Rectangle(0,0,width,BOX_HEIGHT);
         background.setFillColor(COLOR);
         background.setStroked(false);
         add(background);
 
-        searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        searchBoxText = new GraphicsText("|",5,BOX_HEIGHT / 3 * 2);
         add(searchBoxText);
+        totalHeight = BOX_HEIGHT;
     }
 
     /**
@@ -47,12 +45,12 @@ public class SearchBox extends GraphicsGroup {
         super();
         WIDTH = width;
 
-        background = new Rectangle(0,0,width,HEIGHT);
+        background = new Rectangle(0,0,width,BOX_HEIGHT);
         background.setFillColor(COLOR);
         background.setStroked(false);
         add(background);
 
-        searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        searchBoxText = new GraphicsText("|",5,BOX_HEIGHT / 3 * 2);
         add(searchBoxText);
 
         setWords(new AhoCorasick(wordList));
@@ -67,11 +65,11 @@ public class SearchBox extends GraphicsGroup {
         super();
         WIDTH = width;
 
-        background = new Rectangle(0,0,width,HEIGHT);
+        background = new Rectangle(0,0,width,BOX_HEIGHT);
         background.setFillColor(Color.WHITE);
         add(background);
 
-        searchBoxText = new GraphicsText("|",5,HEIGHT / 3 * 2);
+        searchBoxText = new GraphicsText("|",5,BOX_HEIGHT / 3 * 2);
         add(searchBoxText);
 
         setWords(wordTree);
@@ -127,8 +125,11 @@ public class SearchBox extends GraphicsGroup {
      */
     public void updateResults(){
         clearResults();
+        totalHeight = BOX_HEIGHT;
         if (!text.equals("")){
-            int y = HEIGHT + 10;
+            int y = BOX_HEIGHT + 10;
+
+            totalHeight += 10;
 
             List<String> results = words.getWordsForPrefix(text);
             
@@ -143,7 +144,7 @@ public class SearchBox extends GraphicsGroup {
         
             for(int i = 0; i < priority.size(); i++){
                 makeResultBox(priority.get(i), y);
-                y += HEIGHT;
+                y += BOX_HEIGHT;
             }
         }
     }
@@ -154,11 +155,11 @@ public class SearchBox extends GraphicsGroup {
      * @param y coordinate of the box
      */
     public void makeResultBox(String result, int y){
-        Rectangle background = new Rectangle(0,y,WIDTH,HEIGHT); 
+        Rectangle background = new Rectangle(0,y,WIDTH,BOX_HEIGHT); 
         background.setFillColor(Color.WHITE);
         add(background);
 
-        GraphicsText resultText = new GraphicsText(result,5,HEIGHT / 3 * 2 + y);
+        GraphicsText resultText = new GraphicsText(result,5,BOX_HEIGHT / 3 * 2 + y);
         add(resultText);
 
         Image sideImage;
@@ -169,10 +170,12 @@ public class SearchBox extends GraphicsGroup {
             sideImage = new Image("UI elements" + File.separator + "UI icon_search.png");
         }
 
-        sideImage.setMaxHeight(HEIGHT - 10); 
-        sideImage.setMaxWidth(HEIGHT - 10);
+        sideImage.setMaxHeight(BOX_HEIGHT - 10); 
+        sideImage.setMaxWidth(BOX_HEIGHT - 10);
         sideImage.setPosition(WIDTH - sideImage.getWidth() - 10, y + 5);
         add(sideImage);
+
+        totalHeight += BOX_HEIGHT;
     }
 
     /**
@@ -190,20 +193,28 @@ public class SearchBox extends GraphicsGroup {
      * @param text
      */
     public void addPrioritySearch(String text){
-        if(words.contains(text)){
+        if(words.contains(text) && !prioritySearches.contains(text)){
             prioritySearches.add(text);
         }
+        if(prioritySearches.size() > 5){
+            prioritySearches.remove();
+        }
+        updateResults();
     }
 
     public String getText(){
         return text;
     }
 
-    public Set<String> getPriority(){
+    public Deque<String> getPriority(){
         return prioritySearches;
     }
 
     public AhoCorasick getWords(){
         return words;
+    }
+
+    public int getTotalHeight(){
+        return totalHeight;
     }
 }

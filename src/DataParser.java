@@ -98,7 +98,4 @@ public class DataParser {
         }
         return hashtagMap;
     }
-
-    // TODO: use hashmap to get hashtags as keys and playcounts as values, for each video that has that
-    // hastag add that tiktoks playCount to the value of that hashmap
 }
