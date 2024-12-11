@@ -12,6 +12,7 @@ public class SearchBox extends GraphicsGroup {
     private AhoCorasick words;
     private Deque<String> prioritySearches = new ArrayDeque<String>();
     private int totalHeight;
+    private List<ResultInteractionBox> listOfResults =  new ArrayList<>();
 
     public final int BOX_HEIGHT = 30;
     public final int WIDTH;
@@ -155,9 +156,10 @@ public class SearchBox extends GraphicsGroup {
      * @param y coordinate of the box
      */
     public void makeResultBox(String result, int y){
-        Rectangle background = new Rectangle(0,y,WIDTH,BOX_HEIGHT); 
+        ResultInteractionBox background = new ResultInteractionBox(0,y,WIDTH,BOX_HEIGHT, result); 
         background.setFillColor(Color.WHITE);
         add(background);
+        listOfResults.add(background);
 
         GraphicsText resultText = new GraphicsText(result,5,BOX_HEIGHT / 3 * 2 + y);
         add(resultText);
@@ -185,7 +187,20 @@ public class SearchBox extends GraphicsGroup {
         removeAll();
         add(background);
         add(searchBoxText);
+        listOfResults.clear();
 
+    }
+
+    public void addClickedBoxToPriority(Point p){
+        p = p.subtract(new Point(getX(),getY())); //Adjusts point clicked to the Graphics Group coordinates
+        for (ResultInteractionBox box : listOfResults) {
+            if (box.isInBounds(p)){
+                text = box.getString();
+                searchBoxText.setText(box.getString());
+                addPrioritySearch(box.getString());
+                break;
+            }
+        }
     }
 
     /**

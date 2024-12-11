@@ -19,6 +19,8 @@ public class MainWindow {
             if (event.getKey().equals(Key.DELETE_OR_BACKSPACE)){
                 searchBox.deleteLastCharacter();
             };});
+
+        canvas.onMouseDown(e -> searchBox.addClickedBoxToPriority(e.getPosition()));
     }
     
 
