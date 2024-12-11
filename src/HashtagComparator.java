@@ -20,13 +20,13 @@ public class HashtagComparator implements Comparator<String>{
         int hashtag2Views = hashtagMap.get(hashtag2);
 
         if (hashtag1Views < hashtag2Views){
-            return -1;
+            return 1; //We want views to be sorted from most to least
         }
         else if(hashtag1Views > hashtag2Views){
-            return 1;
+            return -1;
         }
         else{
-            return 0;
+            return hashtag1.compareTo(hashtag2); 
         }
 
     }

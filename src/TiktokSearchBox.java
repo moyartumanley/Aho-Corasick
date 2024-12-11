@@ -49,7 +49,6 @@ public class TiktokSearchBox extends SearchBox{
 
             List<String> results = getWords().getWordsForPrefix(getText());
             Collections.sort(results, new HashtagComparator());
-            Collections.reverse(results);
             
             List<String> similarResults = getWords().searchNotPrefixSimilarWords(getText())
                                                     .stream()
@@ -57,13 +56,11 @@ public class TiktokSearchBox extends SearchBox{
                                                     .limit(10 - results.size())
                                                     .collect(Collectors.toList());
             Collections.sort(similarResults, new HashtagComparator());
-            Collections.reverse(similarResults);
 
             results.addAll(similarResults);
 
             List<String> priority = results.stream().filter(result -> getPriority().contains(result)).collect(Collectors.toList());
             Collections.sort(priority, new HashtagComparator());
-            Collections.reverse(priority);
             
             results.removeAll(priority);
             priority.addAll(results);
