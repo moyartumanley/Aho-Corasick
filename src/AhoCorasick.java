@@ -12,7 +12,7 @@ public class AhoCorasick {
     private int size;
 
     /**
-     * Aho-Corasick tree with null root node
+     * Aho-Corasick tree with null root node for testing methods (which were originally public)
      * It is best to use the constructor with the list parameter to properly set suffixes
      */
     public AhoCorasick(){
@@ -21,7 +21,7 @@ public class AhoCorasick {
     }
 
     /**
-     * Aho-Corasick tree with all of the words in wordList. 
+     * Unmodifiable Aho-Corasick tree with all of the words in wordList. 
      */
     public AhoCorasick(List<String> wordList){
         root = new TreeNode(); //null node
@@ -32,7 +32,7 @@ public class AhoCorasick {
     }
 
     /**
-     * Aho-Corasick tree with all of the words in wordList. 
+     * Unmodifiable Aho-Corasick tree with all of the words in wordList. 
      * @param wordList
      */
     public AhoCorasick(Set<String> wordList){
@@ -48,7 +48,7 @@ public class AhoCorasick {
      * If a word, is already in the tree, then nothing will happen in relation to that word.
      * @param wordList
      */
-    public void addWords(List<String> wordList){
+    private void addWords(List<String> wordList){
         for (int i = 0; i < wordList.size(); i++){
             addWord(wordList.get(i));
         }
@@ -59,7 +59,7 @@ public class AhoCorasick {
      * If a word, is already in the tree, then nothing will happen in relation to that word.
      * @param wordList
      */
-    public void addWords(Set<String> wordList){
+    private void addWords(Set<String> wordList){
         for (String word : wordList) {
             addWord(word);
         }
@@ -71,7 +71,7 @@ public class AhoCorasick {
      * If the word, is already in the tree, then this has no effect.
      * @param word
      */
-    public void addWord(String word){
+    private void addWord(String word){
         if (!containsWord(word)){ // no effect if word already exists
             TreeNode current = root;
 
@@ -179,7 +179,6 @@ public class AhoCorasick {
         }
 
         result.addAll(getWordsContainingSuffix(string));
-        
 
         while(result.contains("")){ //removes all empty strings just in case
             result.remove("");
@@ -191,7 +190,13 @@ public class AhoCorasick {
         return result;
     }
 
-    private List<String> getWordsContainingSuffix(String string){
+    /**
+     * Finds suffix and terminal suffix of a given string, then finds words beginning with thoses suffixes in the current tree.
+     * The order of the list can be arbitrary.
+     * @param string
+     * @return list of words with a suffix of the word
+     */
+    public List<String> getWordsContainingSuffix(String string){
         List<String> result = new ArrayList<>();
 
         String suffix = "";
@@ -237,7 +242,7 @@ public class AhoCorasick {
      * @param string 
      * @return Node containing the string. If the tree does not contain the string, returns null.
      */
-    public TreeNode getNodeWithString(String string){
+    private TreeNode getNodeWithString(String string){
         TreeNode current = root;
         while (string.length() > 0){ // loop to get to the right node containing the string
 
@@ -254,14 +259,10 @@ public class AhoCorasick {
         return current;
     }
 
-    public void clearSuffixes(){
-
-    }
-
     /**
      * Sets suffix and terminal suffix pointers for every node. 
      */
-    public void updateSuffixes(){ 
+    private void updateSuffixes(){ 
         recursiveSetSuffixes(root);
         recursiveSetTerminalSuffixes(root);
     }
