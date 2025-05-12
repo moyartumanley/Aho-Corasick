@@ -1,6 +1,4 @@
 # Trendmaxxing
-Project utilizes the Aho-Corasick algorithm to recreate the Tiktok search feature.
-
 - Trie where nodes have a true or false value for whether the String is within the dictionary (i.e. if the node is the last character of a word or not)
 - There are 3 different kinds of connections:
     - Children: exactly the same from hw3: next letter in the word
