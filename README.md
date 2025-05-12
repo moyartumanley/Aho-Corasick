@@ -12,7 +12,7 @@ Sources:
 - https://cp-algorithms.com/string/aho_corasick.html
 - https://compiler.club/aho-corasick/ (This one has a demo)
 
-## HOW THE ALGORITHM WORKS:
+## How the Algorithm Works:
 After addding all of the nodes, call `updateSuffixes()` to essentially "finish" the tree. Each node has two kinds of suffixes. 
 
 "Suffix" is the largest suffix that exist in the tree. For example, let's say the tree has the word "cat". The possible suffixes are "at", "a", and "". If the tree has the representing "at", then the suffix of "cat" points to the node "at". If "at" doesn't exist but "a" does, then the suffix is "a". Only single letter nodes should have their suffix be "". 
